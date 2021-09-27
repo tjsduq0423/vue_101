@@ -1,5 +1,9 @@
 <template>
-  <Modal :누른거="누른거" :모달창열렸니="모달창열렸니" :원룸들="원룸들" />
+  <Modal
+    @closeModal="모달창열렸니 = false"
+    :모달창열렸니="모달창열렸니"
+    :모달="모달"
+  />
 
   <div class="menu">
     <a v-for="메뉴 in 메뉴들" :key="메뉴">{{ 메뉴 }}</a>
@@ -7,7 +11,15 @@
 
   <Discount />
 
-  <Card :원룸="원룸" v-for="원룸 in 원룸들" :key="원룸" />
+  <Card
+    @openModal="
+      모달창열렸니 = true;
+      모달 = $event;
+    "
+    :원룸="원룸"
+    v-for="원룸 in 원룸들"
+    :key="원룸"
+  />
 </template>
 
 <script>
@@ -20,7 +32,7 @@ export default {
   name: "App",
   data() {
     return {
-      누른거: 0,
+      모달: null,
       원룸들: data,
       모달창열렸니: false,
       메뉴들: ["Home", "Products", "About"],
