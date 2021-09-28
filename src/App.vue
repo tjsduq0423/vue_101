@@ -1,16 +1,26 @@
 <template>
-  <Modal
-    @closeModal="모달창열렸니 = false"
-    :모달창열렸니="모달창열렸니"
-    :모달="모달"
-  />
+  <!-- <div class="start" :class="{ end: 모달창열렸니 }">
+    <Modal
+      @closeModal="모달창열렸니 = false"
+      :모달="모달"
+      :모달창열렸니="모달창열렸니"
+    />
+  </div> -->
+  <transition name="fade">
+    <Modal
+      @closeModal="모달창열렸니 = false"
+      :모달="모달"
+      :모달창열렸니="모달창열렸니"
+    />
+  </transition>
 
   <div class="menu">
     <a v-for="메뉴 in 메뉴들" :key="메뉴">{{ 메뉴 }}</a>
   </div>
-
   <Discount />
 
+  <button @click="priceSort">가격순정렬</button>
+  <button @click="sortBack">되돌리기</button>
   <Card
     @openModal="
       모달창열렸니 = true;
@@ -32,8 +42,9 @@ export default {
   name: "App",
   data() {
     return {
+      원룸들오리지널: [...data],
       모달: null,
-      원룸들: data,
+      원룸들: [...data],
       모달창열렸니: false,
       메뉴들: ["Home", "Products", "About"],
     };
@@ -43,10 +54,46 @@ export default {
     Modal: Modal,
     Card: Card,
   },
+  methods: {
+    priceSort() {
+      this.원룸들.sort(function (a, b) {
+        return a.price - b.price;
+      });
+    },
+    sortBack() {
+      this.원룸들 = [...this.원룸들오리지널];
+    },
+  },
 };
 </script>
 
 <style>
+.fade-enter-from {
+  /* opacity: 0; */
+  transform: translateY(-1000px);
+}
+.fade-enter-active {
+  transition: all 0.5s;
+}
+.fade-enter-to {
+  transform: translateY(0px);
+}
+.fade-leave-from {
+  transform: translateY(0px);
+}
+.fade-leave-active {
+  transition: all 0.5s;
+}
+.fade-leave-to {
+  transform: translateY(-1000px);
+}
+/* .start {
+  opacity: 0;
+  transition: all 1s;
+}
+.end {
+  opacity: 1;
+} */
 .room-img {
   width: 100%;
   margin-top: 40px;
